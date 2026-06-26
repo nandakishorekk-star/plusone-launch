@@ -3,971 +3,400 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PlusOne — Find your Plus One for concerts, festivals, and nights out in Kerala. Launching July 1.">
-  <meta property="og:title" content="PlusOne — Coming Soon">
-  <meta property="og:description" content="Break the loop of your daily cycle. Connect with strangers and create memorable nights.">
+  <meta name="description" content="PlusOne — Find your Plus One for concerts, festivals, and nights out across Kerala. Women stay in control. Launching July 1, 2026.">
+  <meta name="theme-color" content="#0D0D0D">
+  <meta property="og:title" content="PlusOne — Find your Plus One">
+  <meta property="og:description" content="Break the loop of your daily cycle. Connect with strangers and create memorable nights at real events across Kerala.">
   <meta property="og:image" content="https://images.unsplash.com/photo-1540039155733-adacf5aa6623?w=1200&q=80">
-  <title>PlusOne — Coming Soon</title>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://plusone.today">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>PlusOne — Find your Plus One · Kerala</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #0D0D0D;
       --surface: #181818;
-      --surface-2: #222222;
       --gold: #F0B429;
       --gold-dim: #C9930E;
-      --gold-subtle: rgba(240,180,41,0.12);
+      --gold-line: rgba(240,180,41,0.22);
       --text: #FFFFFF;
       --text-secondary: #888888;
       --border: #2A2A2A;
       --danger: #E63946;
-      --font-display: 'Cormorant Garant', serif;
+      --font-display: 'Cormorant Garamond', serif;
       --font-body: 'DM Sans', sans-serif;
+      --pad: 64px;
+      --maxw: 1280px;
     }
 
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
+      background: var(--bg); color: var(--text);
+      font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--gold); color: #0D0D0D; }
+    a { color: inherit; text-decoration: none; }
+
+    /* page grain */
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: 0.5;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+    /* signature editorial frame */
+    .frame {
+      position: fixed; inset: 16px; z-index: 55; pointer-events: none;
+      border: 1px solid var(--gold-line);
     }
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 24px 48px;
-      background: linear-gradient(to bottom, rgba(13,13,13,0.95), transparent);
+    .shell { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad); }
+
+    /* meta / labels */
+    .meta {
+      font-family: var(--font-body); font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-secondary);
     }
+    .meta.gold { color: var(--gold); }
 
-    .nav-logo {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      text-decoration: none;
+    .display { font-family: var(--font-display); font-weight: 300; letter-spacing: -0.02em; line-height: 1; }
+    em.g { font-style: italic; color: var(--gold); font-weight: 400; }
+
+    /* ===== TOP BAR ===== */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 70;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 30px var(--pad);
+      mix-blend-mode: normal;
     }
+    .brand { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.02em; }
+    .brand span { color: var(--gold); }
+    .topbar-right { display: flex; align-items: center; gap: 28px; }
+    .topbar-right .meta { transition: color 0.2s; }
+    .topbar a.meta:hover { color: var(--text); }
 
-    .nav-logo span { color: var(--gold); }
-
-    .nav-pill {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid rgba(240,180,41,0.35);
-      padding: 6px 14px;
-      border-radius: 100px;
-    }
-
-    /* HERO */
+    /* ===== HERO ===== */
     .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 120px 48px 80px;
-      position: relative;
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 140px var(--pad) 0; max-width: var(--maxw); margin: 0 auto; position: relative;
+    }
+    .hero-top {
+      position: absolute; top: 120px; left: var(--pad); right: var(--pad);
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .hero-kicker { font-family: var(--font-display); font-style: italic; font-size: 1.4rem; color: var(--text-secondary); font-weight: 300; }
+    .hero-kicker em { color: var(--gold); font-style: italic; }
+
+    .hero-head {
+      font-family: var(--font-display); font-weight: 300; letter-spacing: -0.04em;
+      line-height: 0.86; margin-bottom: 8px;
+    }
+    .hero-head .line1 { display: block; font-size: clamp(2.4rem, 5vw, 4.4rem); font-weight: 300; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .hero-head .line2 {
+      display: block; font-size: clamp(4.5rem, 16vw, 15rem); font-weight: 300;
+      text-transform: uppercase; letter-spacing: -0.04em;
+    }
+    .hero-head .line2 em { font-style: italic; color: var(--gold); font-weight: 300; }
+    .hero-head sup { font-size: 0.28em; color: var(--gold); vertical-align: super; font-style: italic; }
+
+    .hero-foot {
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px;
+      align-items: end; padding: 40px 0 60px; border-top: 1px solid var(--gold-line); margin-top: 36px;
+    }
+    .hero-lede { font-size: 1.05rem; color: var(--text-secondary); font-weight: 300; line-height: 1.7; max-width: 460px; }
+    .hero-cta-col { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+    .link-cta {
+      font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--text); padding-bottom: 6px;
+      border-bottom: 2px solid var(--gold); display: inline-flex; gap: 10px; align-items: center;
+      transition: gap 0.2s, color 0.2s;
+    }
+    .link-cta:hover { gap: 16px; color: var(--gold); }
+    .hero-cta-note { font-size: 0.78rem; color: var(--text-secondary); }
+    .hero-cta-note b { color: var(--gold); font-weight: 600; }
+
+    /* ===== MARQUEE (designed banner strip) ===== */
+    .marquee {
       overflow: hidden;
+      border-top: 1px solid var(--gold-line); border-bottom: 1px solid var(--gold-line);
+      background: var(--bg);
     }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background-image: url('https://images.unsplash.com/photo-1540039155733-adacf5aa6623?w=1600&q=80&fit=crop');
-      background-size: cover;
-      background-position: center 30%;
-      opacity: 0.18;
-    }
-
-    .hero-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 70% 50%, rgba(240,180,41,0.06) 0%, transparent 60%),
-        linear-gradient(to bottom, rgba(13,13,13,0.4) 0%, rgba(13,13,13,0.85) 70%, var(--bg) 100%);
-    }
-
-    .hero-grain {
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 560px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 28px;
-    }
-
-    .eyebrow::before {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: var(--gold);
-    }
-
-    .hero-headline {
-      font-family: var(--font-display);
-      font-size: clamp(3.2rem, 5.5vw, 5.5rem);
-      font-weight: 300;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
-    }
-
-    .hero-headline em {
-      font-style: italic;
-      color: var(--gold);
-      font-weight: 400;
-    }
-
-    .hero-tagline {
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 400px;
-      margin-bottom: 48px;
-      font-weight: 300;
-    }
-
-    .hero-cta-group {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--gold);
-      color: #0D0D0D;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 14px 28px;
-      border-radius: 2px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .btn-primary:hover { background: #ffc93a; transform: translateY(-1px); }
-
-    .hero-scroll-hint {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    /* PHONE MOCKUP */
-    .hero-visual {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Signature element: rotating golden corona */
-    .corona {
-      position: absolute;
-      width: 340px;
-      height: 340px;
-      border-radius: 50%;
-      background: conic-gradient(
-        from 0deg,
-        transparent 0deg,
-        rgba(240,180,41,0.15) 60deg,
-        rgba(240,180,41,0.35) 120deg,
-        rgba(240,180,41,0.12) 180deg,
-        transparent 240deg,
-        rgba(240,180,41,0.08) 300deg,
-        transparent 360deg
-      );
-      filter: blur(18px);
-      animation: coronaRotate 8s linear infinite;
-    }
-
-    .corona-inner {
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(240,180,41,0.18) 0%, transparent 70%);
-      animation: coronaPulse 3s ease-in-out infinite;
-    }
-
-    @keyframes coronaRotate {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes coronaPulse {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.08); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .corona, .corona-inner { animation: none; }
-    }
-
-    .phone {
-      position: relative;
-      width: 230px;
-      height: 468px;
-      background: #111;
-      border-radius: 38px;
-      border: 1.5px solid rgba(240,180,41,0.3);
-      box-shadow: 0 0 0 6px rgba(0,0,0,0.6), 0 40px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.04);
-      overflow: hidden;
-    }
-
-    .phone-island {
-      position: absolute;
-      top: 14px; left: 50%;
-      transform: translateX(-50%);
-      width: 88px; height: 28px;
-      background: #000;
-      border-radius: 20px;
-      z-index: 5;
-    }
-
-    .phone-screen {
-      position: absolute;
-      inset: 0;
-      padding: 52px 14px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      overflow: hidden;
-    }
-
-    .phone-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .phone-logo-mark {
-      font-family: var(--font-display);
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--gold);
-    }
-
-    .phone-tab-row { display: flex; gap: 6px; }
-
-    .phone-tab {
-      font-size: 0.48rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 100px;
-      background: var(--surface-2);
-    }
-
-    .phone-tab.active {
-      background: var(--gold-subtle);
-      color: var(--gold);
-      border: 1px solid rgba(240,180,41,0.25);
-    }
-
-    .intent-card {
-      background: var(--surface);
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      padding: 12px;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .intent-card.featured {
-      background: linear-gradient(135deg, #1a1500, #181400);
-      border-color: rgba(240,180,41,0.25);
-    }
-
-    .intent-avatar {
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-      border: 1.5px solid rgba(240,180,41,0.3);
-    }
-
-    .intent-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-    .intent-body { flex: 1; min-width: 0; }
-
-    .intent-name { font-size: 0.6rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-    .intent-event { font-size: 0.5rem; color: var(--gold); font-weight: 500; margin-bottom: 4px; }
-
-    .intent-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-
-    .intent-tag {
-      font-size: 0.42rem;
-      color: var(--text-secondary);
-      background: var(--surface-2);
-      padding: 2px 5px;
-      border-radius: 4px;
-    }
-
-    .intent-action {
-      font-size: 0.48rem;
-      font-weight: 600;
-      color: #0D0D0D;
-      background: var(--gold);
-      padding: 4px 8px;
-      border-radius: 6px;
-      margin-top: 6px;
-      display: inline-block;
-    }
-
-    .intent-card-sm {
-      background: var(--surface);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .sm-avatar {
-      width: 30px; height: 30px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .sm-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-    .sm-text { flex: 1; min-width: 0; }
-    .sm-name { font-size: 0.54rem; font-weight: 600; color: var(--text); }
-    .sm-sub { font-size: 0.46rem; color: var(--text-secondary); }
-
-    .sm-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* TICKER */
-    .ticker-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-      padding: 28px 48px;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
-
-    .ticker-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      white-space: nowrap;
-    }
-
-    .ticker-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
-
-    .ticker-text {
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    /* COUNTDOWN */
-    .countdown-section {
-      padding: 80px 48px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, var(--bg) 0%, #0f0e00 50%, var(--bg) 100%);
-    }
-
-    .section-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
-    }
-
-    .countdown-heading {
-      font-family: var(--font-display);
-      font-size: clamp(1.6rem, 3vw, 2.6rem);
-      font-weight: 300;
-      margin-bottom: 52px;
-      letter-spacing: -0.01em;
-    }
-
-    .countdown-heading em { font-style: italic; color: var(--gold); }
-
-    .countdown-grid {
-      display: inline-flex;
-      gap: 20px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .countdown-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .countdown-num {
-      font-family: var(--font-display);
-      font-size: clamp(3.5rem, 6vw, 5.5rem);
-      font-weight: 300;
-      line-height: 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      width: clamp(90px, 12vw, 130px);
-      height: clamp(90px, 12vw, 130px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 4px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .countdown-num::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--gold);
-      opacity: 0.6;
-    }
-
-    .countdown-label {
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .countdown-sep {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      color: var(--gold);
-      opacity: 0.4;
-      line-height: 1;
-      margin-top: 28px;
-    }
-
-    #countdown-done {
-      display: none;
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    /* FEATURES */
-    .features-section { padding: 100px 48px; }
-
-    .features-header { text-align: center; margin-bottom: 64px; }
-
-    .features-heading {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 300;
-      letter-spacing: -0.01em;
-    }
-
-    .features-heading em { font-style: italic; color: var(--gold); }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .feature-card {
-      position: relative;
-      height: 480px;
-      overflow: hidden;
-    }
-
-    .feature-card:first-child { border-radius: 4px 0 0 4px; }
-    .feature-card:last-child  { border-radius: 0 4px 4px 0; }
-
-    .feature-img {
-      position: absolute;
-      inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-
-    .feature-card:hover .feature-img { transform: scale(1.04); }
-
-    .feature-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0.5) 50%, rgba(13,13,13,0.2) 100%);
-    }
-
-    .feature-content {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 32px 28px;
-    }
-
-    .feature-icon { font-size: 1.4rem; margin-bottom: 16px; display: block; }
-
-    .feature-title {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      font-weight: 400;
-      line-height: 1.2;
-      margin-bottom: 10px;
-    }
-
-    .feature-desc {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    .feature-num {
-      position: absolute;
-      top: 24px; right: 24px;
-      font-family: var(--font-display);
-      font-size: 3.5rem;
-      font-weight: 300;
-      color: rgba(240,180,41,0.12);
-      line-height: 1;
-      font-style: italic;
-    }
-
-    /* SIGNUP */
-    .signup-section {
-      padding: 100px 48px;
-      text-align: center;
-      background: radial-gradient(ellipse at 50% 0%, rgba(240,180,41,0.08) 0%, transparent 60%);
-      border-top: 1px solid var(--border);
-    }
-
-    .signup-heading {
-      font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4vw, 3.8rem);
-      font-weight: 300;
-      line-height: 1.1;
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .signup-heading em { font-style: italic; color: var(--gold); }
-
-    .signup-sub {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      margin-bottom: 48px;
-      font-weight: 300;
-    }
-
-    .signup-form-wrap {
-      display: flex;
-      max-width: 480px;
-      margin: 0 auto 12px;
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      transition: border-color 0.2s;
-    }
-
-    .signup-form-wrap:focus-within { border-color: rgba(240,180,41,0.5); }
-
-    .signup-input {
-      flex: 1;
-      background: var(--surface);
-      border: none;
-      outline: none;
-      padding: 16px 20px;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-
+    .marquee-track { display: flex; width: max-content; animation: scroll 45s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-track img { display: block; height: clamp(110px, 17vw, 230px); width: auto; }
+    @keyframes scroll { to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+    /* ===== EDITORIAL SPREAD ===== */
+    .spread { display: grid; grid-template-columns: 220px 1fr; gap: 56px; padding: 100px var(--pad); max-width: var(--maxw); margin: 0 auto; border-top: 1px solid var(--border); }
+    .spread-aside { position: relative; }
+    .spread-index { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: 4.5rem; color: var(--gold); line-height: 0.9; margin-bottom: 16px; }
+    .spread-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-secondary); }
+    .spread-title { font-family: var(--font-display); font-weight: 300; font-size: clamp(2.2rem, 4vw, 3.6rem); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 44px; }
+    .spread-title em { font-style: italic; color: var(--gold); }
+
+    /* steps */
+    .steps { display: grid; gap: 2px; }
+    .step { display: grid; grid-template-columns: 64px 1fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--border); align-items: start; }
+    .step:first-child { border-top: 1px solid var(--border); }
+    .step-no { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: 2.6rem; color: rgba(240,180,41,0.4); line-height: 1; }
+    .step-h { font-family: var(--font-display); font-size: 1.7rem; font-weight: 400; margin-bottom: 6px; }
+    .step-p { font-size: 0.92rem; color: var(--text-secondary); font-weight: 300; line-height: 1.7; max-width: 520px; }
+    .step-p b { color: var(--text); font-weight: 500; }
+
+    /* image plate */
+    .plate { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad) 100px; }
+    .plate-inner { position: relative; height: clamp(320px, 50vw, 600px); overflow: hidden; border: 1px solid var(--gold-line); }
+    .plate-inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; filter: grayscale(0.2) contrast(1.05); }
+    .plate-inner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(13,13,13,0.7) 0%, rgba(13,13,13,0.2) 50%, rgba(13,13,13,0.85) 100%), radial-gradient(ellipse at 30% 90%, rgba(240,180,41,0.12), transparent 60%); }
+    .plate-cap { position: absolute; z-index: 2; bottom: 36px; left: 36px; right: 36px; }
+    .plate-quote { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: clamp(1.8rem, 4vw, 3.4rem); line-height: 1.1; letter-spacing: -0.01em; max-width: 760px; }
+    .plate-quote em { color: var(--gold); }
+    .plate-by { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-secondary); margin-top: 16px; }
+
+    /* safety definition rows */
+    .defs { display: grid; gap: 0; }
+    .def { display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--border); align-items: baseline; }
+    .def:first-child { border-top: 1px solid var(--border); }
+    .def-term { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; color: var(--gold); }
+    .def-desc { font-size: 0.92rem; color: var(--text-secondary); font-weight: 300; line-height: 1.7; }
+
+    /* leader-dot list (cities) */
+    .leaders { display: grid; gap: 0; }
+    .leader { display: flex; align-items: baseline; gap: 12px; padding: 22px 0; border-bottom: 1px solid var(--border); }
+    .leader:first-child { border-top: 1px solid var(--border); }
+    .leader-name { font-family: var(--font-display); font-size: 2rem; font-weight: 400; white-space: nowrap; }
+    .leader-fill { flex: 1; border-bottom: 1px dotted var(--border); transform: translateY(-4px); }
+    .leader-status { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-secondary); white-space: nowrap; }
+    .leader.live .leader-name { color: var(--text); }
+    .leader.live .leader-status { color: var(--gold); }
+
+    /* countdown editorial */
+    .countdown-spread { text-align: center; padding: 110px var(--pad); border-top: 1px solid var(--border); background: linear-gradient(180deg, var(--bg), #0f0e00 50%, var(--bg)); }
+    .countdown-kick { font-family: var(--font-display); font-style: italic; font-size: clamp(1.4rem, 3vw, 2.2rem); color: var(--text-secondary); font-weight: 300; margin-bottom: 40px; }
+    .countdown-kick em { color: var(--gold); }
+    .countdown-row { display: inline-flex; align-items: flex-start; gap: clamp(16px, 4vw, 56px); flex-wrap: wrap; justify-content: center; }
+    .cd-unit { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .cd-num { font-family: var(--font-display); font-weight: 300; font-size: clamp(4.5rem, 11vw, 10rem); line-height: 0.8; letter-spacing: -0.03em; }
+    .cd-lab { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-secondary); }
+    .cd-slash { font-family: var(--font-display); font-weight: 300; font-size: clamp(3rem, 8vw, 7rem); color: var(--gold); opacity: 0.35; line-height: 0.9; }
+    #countdown-done { display: none; font-family: var(--font-display); font-style: italic; font-size: clamp(2.5rem, 6vw, 5rem); color: var(--gold); }
+
+    /* ===== SIGNUP ===== */
+    .signup { text-align: center; padding: 120px var(--pad); border-top: 1px solid var(--border); background: radial-gradient(ellipse at 50% 0%, rgba(240,180,41,0.09), transparent 60%); }
+    .signup-kick { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+    .signup-head { font-family: var(--font-display); font-weight: 300; font-size: clamp(3rem, 8vw, 6.5rem); letter-spacing: -0.03em; line-height: 0.92; margin-bottom: 14px; }
+    .signup-head em { font-style: italic; color: var(--gold); }
+    .signup-sub { font-size: 1rem; color: var(--text-secondary); font-weight: 300; margin-bottom: 44px; }
+    .signup-form { display: flex; align-items: center; gap: 0; max-width: 520px; margin: 0 auto 14px; border-bottom: 1px solid var(--border); transition: border-color 0.2s; }
+    .signup-form:focus-within { border-color: var(--gold); }
+    .signup-input { flex: 1; background: none; border: none; outline: none; padding: 16px 4px; font-family: var(--font-body); font-size: 1rem; color: var(--text); }
     .signup-input::placeholder { color: var(--text-secondary); }
+    .signup-btn { background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); padding: 12px 6px; white-space: nowrap; transition: opacity 0.2s; }
+    .signup-btn:hover:not(:disabled) { opacity: 0.7; }
+    .signup-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .signup-error { font-size: 0.78rem; color: var(--danger); min-height: 20px; margin-bottom: 6px; }
+    .signup-note { font-size: 0.75rem; color: var(--text-secondary); }
+    .signup-success { display: none; flex-direction: column; align-items: center; gap: 12px; }
+    .signup-success-text { font-family: var(--font-display); font-style: italic; font-size: 2.4rem; color: var(--gold); }
+    .signup-success-sub { font-size: 0.85rem; color: var(--text-secondary); }
 
-    .signup-btn {
-      background: var(--gold);
-      color: #0D0D0D;
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 16px 24px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }
+    /* ===== FOOTER (colophon) ===== */
+    footer { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; padding: 56px var(--pad); max-width: var(--maxw); margin: 0 auto; border-top: 1px solid var(--gold-line); }
+    .colophon-brand { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; }
+    .colophon-brand span { color: var(--gold); }
+    .colophon-meta { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-secondary); margin-top: 8px; }
+    .colophon-tag { font-family: var(--font-display); font-style: italic; font-size: 1.1rem; color: var(--text-secondary); font-weight: 300; text-align: right; }
 
-    .signup-btn:hover:not(:disabled) { background: #ffc93a; }
-    .signup-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .signup-error {
-      font-size: 0.78rem;
-      color: var(--danger);
-      min-height: 20px;
-      margin-bottom: 8px;
-    }
-
-    .signup-note {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-
-    .signup-success {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .signup-success-icon {
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      border: 1px solid rgba(240,180,41,0.4);
-      background: var(--gold-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-
-    .signup-success-text {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    .signup-success-sub {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 52px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-logo {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 600;
-    }
-
-    .footer-logo span { color: var(--gold); }
-
-    .footer-city {
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-top: 6px;
-    }
-
-    .footer-tagline {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      font-weight: 300;
-    }
-
-    /* RESPONSIVE */
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
-      nav { padding: 20px 24px; }
-
-      .hero {
-        grid-template-columns: 1fr;
-        padding: 100px 24px 60px;
-        text-align: center;
-      }
-
-      .hero-content { max-width: 100%; }
-      .eyebrow { justify-content: center; }
-      .hero-tagline { margin-inline: auto; }
-      .hero-cta-group { justify-content: center; }
-      .hero-visual { margin-top: 60px; }
-
-      .countdown-section { padding: 60px 24px; }
-      .countdown-grid { gap: 12px; }
-
-      .features-section { padding: 60px 24px; }
-      .features-grid { grid-template-columns: 1fr; gap: 2px; }
-      .feature-card { height: 320px; }
-      .feature-card:first-child { border-radius: 4px 4px 0 0; }
-      .feature-card:last-child  { border-radius: 0 0 4px 4px; }
-
-      .signup-section { padding: 60px 24px; }
-      .signup-form-wrap { flex-direction: column; }
-      .signup-input, .signup-btn { width: 100%; }
-
+      :root { --pad: 24px; }
+      .frame { inset: 10px; }
+      .topbar { padding: 20px 24px; }
+      .topbar-right .meta:not(.join) { display: none; }
+      .hero { padding: 130px 24px 0; }
+      .hero-top { position: static; flex-direction: column; gap: 4px; margin-bottom: 24px; }
+      .hero-foot { grid-template-columns: 1fr; gap: 28px; }
+      .spread { grid-template-columns: 1fr; gap: 28px; padding: 64px 24px; }
+      .spread-index { font-size: 3.2rem; }
+      .def { grid-template-columns: 1fr; gap: 4px; }
+      .leader-name { font-size: 1.5rem; }
+      .leader-fill { display: none; }
+      .leader { justify-content: space-between; }
+      .plate { padding: 0 24px 64px; }
+      .countdown-spread, .signup { padding: 70px 24px; }
       footer { padding: 40px 24px; flex-direction: column; align-items: flex-start; }
-
-      .ticker-row { gap: 16px; padding: 20px 24px; }
+      .colophon-tag { text-align: left; }
     }
-
     @media (max-width: 480px) {
-      .hero-headline { font-size: 2.8rem; }
-      .corona { width: 260px; height: 260px; }
-      .corona-inner { width: 160px; height: 160px; }
-      .phone { width: 190px; height: 386px; }
+      .step { grid-template-columns: 1fr; gap: 8px; }
+      .cd-slash { display: none; }
     }
   </style>
 </head>
 <body>
+  <div class="grain"></div>
+  <div class="frame"></div>
 
-  <nav>
-    <a class="nav-logo" href="#">Plus<span>One</span></a>
-    <span class="nav-pill">Coming July 1</span>
-  </nav>
+  <header class="topbar">
+    <a class="brand" href="#top">Plus<span>One</span></a>
+    <nav class="topbar-right">
+      <a class="meta" href="#how">How it works</a>
+      <a class="meta" href="#safety">Safety</a>
+      <a class="meta" href="#cities">Cities</a>
+      <a class="meta gold join" href="#signup">Join &rarr;</a>
+    </nav>
+  </header>
 
+  <span id="top"></span>
   <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-grain"></div>
-
-    <div class="hero-content">
-      <div class="eyebrow">Kochi, Kerala &mdash; 2026</div>
-      <h1 class="hero-headline">
-        Find your<br>
-        <em>Plus One.</em>
-      </h1>
-      <p class="hero-tagline">
-        Break the loop of your daily cycle. Connect with strangers and create memorable nights at concerts, festivals, and events across Kerala.
-      </p>
-      <div class="hero-cta-group">
-        <a href="#signup" class="btn-primary">Join the waitlist</a>
-        <span class="hero-scroll-hint">Launching July 1</span>
-      </div>
+    <div class="hero-top">
+      <span class="hero-kicker">Issue 01 &mdash; <em>The Kochi Edition</em></span>
+      <span class="meta">Kerala / Est. 2026</span>
     </div>
 
-    <div class="hero-visual">
-      <div class="corona"></div>
-      <div class="corona-inner"></div>
-      <div class="phone">
-        <div class="phone-island"></div>
-        <div class="phone-screen">
-          <div class="phone-header">
-            <span class="phone-logo-mark">+1</span>
-            <div class="phone-tab-row">
-              <span class="phone-tab active">For You</span>
-              <span class="phone-tab">Events</span>
-            </div>
-          </div>
-          <div class="intent-card featured">
-            <div class="intent-avatar">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face&q=80" alt="" loading="lazy">
-            </div>
-            <div class="intent-body">
-              <div class="intent-name">Aisha, 23</div>
-              <div class="intent-event">✦ Prism Festival · Kochi</div>
-              <div class="intent-tags">
-                <span class="intent-tag">Music</span>
-                <span class="intent-tag">Dancing</span>
-                <span class="intent-tag">Late nights</span>
-              </div>
-              <span class="intent-action">Accept Intent</span>
-            </div>
-          </div>
-          <div class="intent-card-sm">
-            <div class="sm-avatar">
-              <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=60&h=60&fit=crop&crop=face&q=80" alt="" loading="lazy">
-            </div>
-            <div class="sm-text">
-              <div class="sm-name">Meera, 25</div>
-              <div class="sm-sub">NH7 Weekender · Thrissur</div>
-            </div>
-            <div class="sm-dot"></div>
-          </div>
-          <div class="intent-card-sm">
-            <div class="sm-avatar">
-              <img src="https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=60&h=60&fit=crop&crop=face&q=80" alt="" loading="lazy">
-            </div>
-            <div class="sm-text">
-              <div class="sm-name">Divya, 22</div>
-              <div class="sm-sub">Sunburn Arena · Kochi</div>
-            </div>
-            <div class="sm-dot"></div>
-          </div>
-        </div>
+    <h1 class="hero-head">
+      <span class="line1">Find your</span>
+      <span class="line2">Plus<em>One</em><sup>+1</sup></span>
+    </h1>
+
+    <div class="hero-foot">
+      <p class="hero-lede">
+        Break the loop of your daily cycle. Meet people at concerts, festivals, and nights out across Kerala &mdash; real events, real plans, and a verified, safety-first space where every connection happens on your terms.
+      </p>
+      <div class="hero-cta-col">
+        <a class="link-cta" href="#signup">Join the waitlist <span>&rarr;</span></a>
+        <span class="hero-cta-note">Free early access in <b>Kochi</b> &middot; Launching July 1</span>
       </div>
     </div>
   </section>
 
-  <div class="ticker-row">
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-text">Women stay in control</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-text">KYC verified profiles</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-text">Real events. Real nights.</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-text">Kochi &rarr; Kerala</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-text">Safety-first design</span></div>
-    <div class="ticker-item"><div class="ticker-dot"></div><span class="ticker-text">Launching July 1, 2026</span></div>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <img src="marquee.png" alt="We don't chase moments, we collect memories — concerts, festivals, nights out, memorable nights">
+      <img src="marquee.png" alt="">
+    </div>
   </div>
 
-  <section class="countdown-section">
-    <div class="section-eyebrow">The clock is ticking</div>
-    <h2 class="countdown-heading">Launching in <em>exactly</em></h2>
-    <div class="countdown-grid" id="countdown-grid">
-      <div class="countdown-block">
-        <div class="countdown-num" id="cd-days">00</div>
-        <div class="countdown-label">Days</div>
-      </div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-block">
-        <div class="countdown-num" id="cd-hours">00</div>
-        <div class="countdown-label">Hours</div>
-      </div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-block">
-        <div class="countdown-num" id="cd-mins">00</div>
-        <div class="countdown-label">Minutes</div>
-      </div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-block">
-        <div class="countdown-num" id="cd-secs">00</div>
-        <div class="countdown-label">Seconds</div>
-      </div>
-    </div>
-    <p id="countdown-done">We&rsquo;re live. ✦</p>
-  </section>
-
-  <section class="features-section">
-    <div class="features-header">
-      <div class="section-eyebrow">What PlusOne is</div>
-      <h2 class="features-heading">Nights worth <em>remembering</em></h2>
-    </div>
-    <div class="features-grid">
-      <div class="feature-card">
-        <img class="feature-img" src="https://images.unsplash.com/photo-1470229538611-7d67d4f3cb3f?w=700&h=900&fit=crop&q=80" alt="Concert crowd" loading="lazy">
-        <div class="feature-overlay"></div>
-        <div class="feature-content">
-          <span class="feature-icon">🎶</span>
-          <h3 class="feature-title">Event-first connections</h3>
-          <p class="feature-desc">Every match starts at a real event — a concert, a festival, a night out. Shared experience before a shared conversation.</p>
+  <section class="spread" id="how">
+    <aside class="spread-aside">
+      <div class="spread-index">01</div>
+      <div class="spread-label">How it works</div>
+    </aside>
+    <div>
+      <h2 class="spread-title">Three steps to your <em>night out</em></h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-no">i</div>
+          <div>
+            <h3 class="step-h">Pick the event</h3>
+            <p class="step-p">Browse concerts, festivals and nights out happening near you. Every connection on PlusOne starts at a <b>real event</b> &mdash; shared plans before small talk.</p>
+          </div>
         </div>
-        <span class="feature-num">01</span>
-      </div>
-      <div class="feature-card">
-        <img class="feature-img" src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=700&h=900&fit=crop&q=80" alt="Two people at an event" loading="lazy">
-        <div class="feature-overlay"></div>
-        <div class="feature-content">
-          <span class="feature-icon">✦</span>
-          <h3 class="feature-title">Women set the terms</h3>
-          <p class="feature-desc">Women post freely and choose who they meet. Men express interest — women decide. Safety is the architecture, not an afterthought.</p>
+        <div class="step">
+          <div class="step-no">ii</div>
+          <div>
+            <h3 class="step-h">Post, or express interest</h3>
+            <p class="step-p">Women post who they&rsquo;d love a Plus One for. Men attending the same event can <b>express interest</b> &mdash; never cold-message, never barge in.</p>
+          </div>
         </div>
-        <span class="feature-num">02</span>
-      </div>
-      <div class="feature-card">
-        <img class="feature-img" src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=700&h=900&fit=crop&q=80" alt="Kerala cityscape" loading="lazy">
-        <div class="feature-overlay"></div>
-        <div class="feature-content">
-          <span class="feature-icon">📍</span>
-          <h3 class="feature-title">Built for Kerala</h3>
-          <p class="feature-desc">Kochi first. Thrissur next. A product that knows the venues, the vibe, and the culture.</p>
+        <div class="step">
+          <div class="step-no">iii</div>
+          <div>
+            <h3 class="step-h">She decides</h3>
+            <p class="step-p">Women see who&rsquo;s interested and <b>choose</b> their Plus One. Only then does a match open a chat. The final call is always hers.</p>
+          </div>
         </div>
-        <span class="feature-num">03</span>
       </div>
     </div>
   </section>
 
-  <section class="signup-section" id="signup">
-    <div class="section-eyebrow">Early access</div>
-    <h2 class="signup-heading">Be first in<br><em>Kochi.</em></h2>
-    <p class="signup-sub">Drop your email. We'll reach you before anyone else.</p>
+  <div class="plate">
+    <div class="plate-inner">
+      <img src="https://images.unsplash.com/photo-1470229538611-7d67d4f3cb3f?w=1600&q=80&fit=crop" alt="Concert crowd at night" loading="lazy">
+      <div class="plate-cap">
+        <p class="plate-quote">Every match begins at a <em>real event</em> &mdash; a concert, a festival, a night you&rsquo;d remember anyway.</p>
+        <p class="plate-by">PlusOne &mdash; Event-first by design</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="spread" id="safety">
+    <aside class="spread-aside">
+      <div class="spread-index">02</div>
+      <div class="spread-label">Safety is the architecture</div>
+    </aside>
+    <div>
+      <h2 class="spread-title">Built so women feel <em>safe</em>, always.</h2>
+      <div class="defs">
+        <div class="def"><div class="def-term">KYC verified</div><div class="def-desc">Selfie + ID verification before anyone can connect. Real people only &mdash; no anonymous accounts.</div></div>
+        <div class="def"><div class="def-term">Women decide</div><div class="def-desc">Men can express interest, never initiate. The match is always her choice, and only she can open a chat.</div></div>
+        <div class="def"><div class="def-term">SOS &amp; live location</div><div class="def-desc">One-tap SOS and live location sharing with a trusted contact during any meet-up.</div></div>
+        <div class="def"><div class="def-term">Block &amp; report</div><div class="def-desc">Block or report anyone, anywhere. Repeat offenders are automatically suspended.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="spread" id="cities">
+    <aside class="spread-aside">
+      <div class="spread-index">03</div>
+      <div class="spread-label">Where it happens</div>
+    </aside>
+    <div>
+      <h2 class="spread-title">Starting in <em>Kochi</em>, rolling across Kerala.</h2>
+      <div class="leaders">
+        <div class="leader live"><span class="leader-name">Kochi</span><span class="leader-fill"></span><span class="leader-status">Launching July 1</span></div>
+        <div class="leader"><span class="leader-name">Thrissur</span><span class="leader-fill"></span><span class="leader-status">Next up</span></div>
+        <div class="leader"><span class="leader-name">Kozhikode</span><span class="leader-fill"></span><span class="leader-status">Coming soon</span></div>
+        <div class="leader"><span class="leader-name">Trivandrum</span><span class="leader-fill"></span><span class="leader-status">Coming soon</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="countdown-spread">
+    <p class="countdown-kick">Launching in <em>exactly</em></p>
+    <div class="countdown-row" id="countdown-grid">
+      <div class="cd-unit"><div class="cd-num" id="cd-days">00</div><div class="cd-lab">Days</div></div>
+      <div class="cd-slash">/</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-hours">00</div><div class="cd-lab">Hours</div></div>
+      <div class="cd-slash">/</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-mins">00</div><div class="cd-lab">Minutes</div></div>
+      <div class="cd-slash">/</div>
+      <div class="cd-unit"><div class="cd-num" id="cd-secs">00</div><div class="cd-lab">Seconds</div></div>
+    </div>
+    <p id="countdown-done">We&rsquo;re live. &#10022;</p>
+  </section>
+
+  <section class="signup" id="signup">
+    <p class="signup-kick">Early access</p>
+    <h2 class="signup-head">Be first in <em>Kochi.</em></h2>
+    <p class="signup-sub">Drop your email. We&rsquo;ll reach you before anyone else.</p>
 
     <div id="signup-ui">
-      <div class="signup-form-wrap">
+      <div class="signup-form">
         <input type="email" class="signup-input" id="signup-email" placeholder="your@email.com" autocomplete="email" inputmode="email">
-        <button class="signup-btn" id="signup-btn">Join Waitlist</button>
+        <button class="signup-btn" id="signup-btn">Join Waitlist &rarr;</button>
       </div>
       <div class="signup-error" id="signup-error"></div>
       <p class="signup-note">No spam. Just a heads-up when the app drops.</p>
     </div>
 
     <div class="signup-success" id="signup-success">
-      <div class="signup-success-icon">✦</div>
-      <div class="signup-success-text">You&rsquo;re in.</div>
-      <div class="signup-success-sub">We'll reach you when PlusOne goes live in Kochi.</div>
+      <div class="signup-success-text">You&rsquo;re in. &#10022;</div>
+      <div class="signup-success-sub">We&rsquo;ll reach you when PlusOne goes live in Kochi.</div>
     </div>
   </section>
 
   <footer>
     <div>
-      <div class="footer-logo">Plus<span>One</span></div>
-      <div class="footer-city">Kochi &middot; Kerala &middot; 2026</div>
+      <div class="colophon-brand">Plus<span>One</span></div>
+      <div class="colophon-meta">Kochi &middot; Kerala &middot; 2026</div>
     </div>
-    <div class="footer-tagline">&ldquo;Break the loop. Create the night.&rdquo;</div>
+    <div class="colophon-tag">&ldquo;Break the loop. Create the night.&rdquo;</div>
   </footer>
 
   <script type="module">
@@ -982,14 +411,11 @@
       messagingSenderId: "477871966198",
       appId: "1:477871966198:web:fd7f5ab37d878df23c29d7"
     });
-
     const db = getFirestore(app);
 
     // Countdown
     const target = new Date('2026-07-01T00:00:00+05:30');
-
-    function pad(n) { return String(n).padStart(2, '0'); }
-
+    const pad = n => String(n).padStart(2, '0');
     function tick() {
       const diff = target - Date.now();
       if (diff <= 0) {
@@ -1002,7 +428,6 @@
       document.getElementById('cd-mins').textContent  = pad(Math.floor(diff / 60000) % 60);
       document.getElementById('cd-secs').textContent  = pad(Math.floor(diff / 1000) % 60);
     }
-
     tick();
     setInterval(tick, 1000);
 
@@ -1010,41 +435,31 @@
     const emailInput = document.getElementById('signup-email');
     const btn        = document.getElementById('signup-btn');
     const errorEl    = document.getElementById('signup-error');
-
     async function submit() {
       const email = emailInput.value.trim();
       errorEl.textContent = '';
-
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         errorEl.textContent = 'Enter a valid email address.';
         emailInput.focus();
         return;
       }
-
       btn.disabled = true;
       btn.textContent = 'Joining…';
-
       try {
         await addDoc(collection(db, 'waitlist'), {
-          email,
-          city: 'Kochi',
-          source: 'launch-page',
-          signedUpAt: serverTimestamp(),
+          email, city: 'Kochi', source: 'launch-page', signedUpAt: serverTimestamp(),
         });
         document.getElementById('signup-ui').style.display = 'none';
-        const s = document.getElementById('signup-success');
-        s.style.display = 'flex';
+        document.getElementById('signup-success').style.display = 'flex';
       } catch (err) {
         console.error(err);
         errorEl.textContent = 'Something went wrong. Please try again.';
         btn.disabled = false;
-        btn.textContent = 'Join Waitlist';
+        btn.textContent = 'Join Waitlist →';
       }
     }
-
     btn.addEventListener('click', submit);
     emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
   </script>
-
 </body>
 </html>
