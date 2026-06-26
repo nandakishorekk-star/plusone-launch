@@ -108,16 +108,47 @@
       align-items: end; padding: 40px 0 60px; border-top: 1px solid var(--gold-line); margin-top: 36px;
     }
     .hero-lede { font-size: 1.05rem; color: var(--text-secondary); font-weight: 300; line-height: 1.7; max-width: 460px; }
-    .hero-cta-col { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-    .link-cta {
-      font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
-      text-transform: uppercase; color: var(--text); padding-bottom: 6px;
-      border-bottom: 2px solid var(--gold); display: inline-flex; gap: 10px; align-items: center;
-      transition: gap 0.2s, color 0.2s;
+    .hero-cta-col { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+
+    /* hero email capture */
+    .hero-form { display: flex; align-items: center; gap: 0; width: 100%; max-width: 460px; border-bottom: 1px solid var(--border); transition: border-color 0.2s; }
+    .hero-form:focus-within { border-color: var(--gold); }
+    .hero-form input { flex: 1; background: none; border: none; outline: none; padding: 14px 4px; font-family: var(--font-body); font-size: 1rem; color: var(--text); }
+    .hero-form input::placeholder { color: var(--text-secondary); }
+    .hero-form button { background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); padding: 12px 6px; white-space: nowrap; transition: opacity 0.2s; }
+    .hero-form button:hover:not(:disabled) { opacity: 0.7; }
+    .hero-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* shared CTA microcopy */
+    .cta-scarcity { font-size: 0.82rem; color: var(--text-secondary); }
+    .cta-scarcity b { color: var(--gold); font-weight: 600; }
+    .cta-social { display: none; font-size: 0.82rem; color: var(--gold); font-weight: 500; letter-spacing: 0.01em; }
+    .cta-social b { font-weight: 700; }
+    .cta-trust { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
+    .cta-err { font-size: 0.78rem; color: var(--danger); min-height: 18px; }
+    .signup .cta-scarcity, .signup .cta-social, .signup .cta-trust, .signup .cta-err { text-align: center; }
+
+    /* sticky mini CTA */
+    .sticky-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 65;
+      display: flex; align-items: center; justify-content: center; gap: 18px;
+      padding: 14px 24px; background: rgba(13,13,13,0.92); backdrop-filter: blur(8px);
+      border-top: 1px solid var(--gold-line);
+      transform: translateY(110%); transition: transform 0.3s ease;
     }
-    .link-cta:hover { gap: 16px; color: var(--gold); }
-    .hero-cta-note { font-size: 0.78rem; color: var(--text-secondary); }
-    .hero-cta-note b { color: var(--gold); font-weight: 600; }
+    .sticky-cta.show { transform: translateY(0); }
+    .sticky-cta span { font-family: var(--font-display); font-style: italic; font-size: 1.1rem; color: rgba(255,255,255,0.85); }
+    .sticky-cta span em { color: var(--gold); font-style: italic; }
+    .sticky-cta a { font-family: var(--font-body); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #0D0D0D; background: var(--gold); padding: 10px 20px; white-space: nowrap; }
+
+    /* referral success */
+    .ref-line { display: flex; align-items: center; gap: 0; max-width: 460px; margin: 22px auto 14px; border: 1px solid var(--border); }
+    .ref-line input { flex: 1; background: none; border: none; outline: none; padding: 13px 14px; font-family: var(--font-body); font-size: 0.9rem; color: var(--text); }
+    .ref-copy { background: none; border: none; border-left: 1px solid var(--border); cursor: pointer; font-family: var(--font-body); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); padding: 13px 18px; white-space: nowrap; }
+    .ref-share { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .ref-share a { font-size: 0.74rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border); padding: 9px 16px; transition: border-color 0.2s, color 0.2s; }
+    .ref-share a:hover { border-color: var(--gold); color: var(--gold); }
+    .signup-success-move { font-size: 0.85rem; color: var(--text-secondary); font-weight: 300; max-width: 420px; margin: 8px auto 0; }
 
     /* ===== TAGLINE STRIP (static quote) ===== */
     .marquee {
@@ -201,8 +232,6 @@
     .signup-btn { background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); padding: 12px 6px; white-space: nowrap; transition: opacity 0.2s; }
     .signup-btn:hover:not(:disabled) { opacity: 0.7; }
     .signup-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .signup-error { font-size: 0.78rem; color: var(--danger); min-height: 20px; margin-bottom: 6px; }
-    .signup-note { font-size: 0.75rem; color: var(--text-secondary); }
     .signup-success { display: none; flex-direction: column; align-items: center; gap: 12px; }
     .signup-success-text { font-family: var(--font-display); font-style: italic; font-size: 2.4rem; color: var(--gold); }
     .signup-success-sub { font-size: 0.85rem; color: var(--text-secondary); }
@@ -237,6 +266,8 @@
     @media (max-width: 480px) {
       .step { grid-template-columns: 1fr; gap: 8px; }
       .cd-slash { display: none; }
+      .sticky-cta span { display: none; }
+      .sticky-cta a { width: 100%; text-align: center; }
     }
   </style>
 </head>
@@ -271,8 +302,14 @@
         Break the loop of your daily cycle. Meet people at concerts, festivals, and nights out across Kerala &mdash; real events, real plans, and a verified, safety-first space where every connection happens on your terms.
       </p>
       <div class="hero-cta-col">
-        <a class="link-cta" href="#signup">Join the waitlist <span>&rarr;</span></a>
-        <span class="hero-cta-note">Free early access in <b>Kochi</b> &middot; Launching July 1</span>
+        <div class="hero-form" data-signup>
+          <input type="email" placeholder="your@email.com" autocomplete="email" inputmode="email" data-email>
+          <button type="button" data-submit>Claim your spot &rarr;</button>
+        </div>
+        <div class="cta-err" data-error></div>
+        <span class="cta-scarcity"><b>Founding 500</b> in Kochi &middot; free early access before public launch</span>
+        <span class="cta-social" data-social>&nbsp;</span>
+        <span class="cta-trust">KYC-verified &middot; Women decide who connects &middot; No spam</span>
       </div>
     </div>
   </section>
@@ -371,22 +408,33 @@
   </section>
 
   <section class="signup" id="signup">
-    <p class="signup-kick">Early access</p>
+    <p class="signup-kick">Founding members &mdash; early access</p>
     <h2 class="signup-head">Be first in <em>Kochi.</em></h2>
-    <p class="signup-sub">Drop your email. We&rsquo;ll reach you before anyone else.</p>
+    <p class="signup-sub">Drop your email and claim a founding spot. We&rsquo;ll reach you before anyone else.</p>
 
     <div id="signup-ui">
-      <div class="signup-form">
-        <input type="email" class="signup-input" id="signup-email" placeholder="your@email.com" autocomplete="email" inputmode="email">
-        <button class="signup-btn" id="signup-btn">Join Waitlist &rarr;</button>
+      <div class="signup-form" data-signup>
+        <input type="email" class="signup-input" placeholder="your@email.com" autocomplete="email" inputmode="email" data-email>
+        <button class="signup-btn" type="button" data-submit>Claim your spot &rarr;</button>
       </div>
-      <div class="signup-error" id="signup-error"></div>
-      <p class="signup-note">No spam. Just a heads-up when the app drops.</p>
+      <div class="cta-err" data-error></div>
+      <p class="cta-scarcity"><b>Founding 500</b> in Kochi &middot; free early access before public launch</p>
+      <p class="cta-social" data-social>&nbsp;</p>
+      <p class="cta-trust">KYC-verified &middot; Women decide who connects &middot; No spam</p>
     </div>
 
     <div class="signup-success" id="signup-success">
       <div class="signup-success-text">You&rsquo;re in. &#10022;</div>
-      <div class="signup-success-sub">We&rsquo;ll reach you when PlusOne goes live in Kochi.</div>
+      <div class="signup-success-sub">You&rsquo;re <b id="ref-position">#&mdash;</b> of Kochi&rsquo;s founding members.</div>
+      <div class="ref-line">
+        <input id="ref-link" readonly value="">
+        <button class="ref-copy" id="ref-copy" type="button">Copy</button>
+      </div>
+      <div class="ref-share">
+        <a id="share-wa" target="_blank" rel="noopener">Share on WhatsApp</a>
+        <a id="share-x" target="_blank" rel="noopener">Share on X</a>
+      </div>
+      <p class="signup-success-move">Every friend who joins moves you up the line &mdash; and unlocks earlier access.</p>
     </div>
   </section>
 
@@ -398,9 +446,15 @@
     <div class="colophon-tag">&ldquo;Break the loop. Create the night.&rdquo;</div>
   </footer>
 
+  <div class="sticky-cta" id="sticky-cta">
+    <span>Claim your <em>founding spot</em> in Kochi</span>
+    <a href="#signup">Claim it &rarr;</a>
+  </div>
+
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, addDoc, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js';
 
     const app = initializeApp({
       apiKey: "AIzaSyBCr1DLZEFaO6leV64UdAVuBwNXD7ttbXw",
@@ -411,6 +465,7 @@
       appId: "1:477871966198:web:fd7f5ab37d878df23c29d7"
     });
     const db = getFirestore(app);
+    const joinWaitlist = httpsCallable(getFunctions(app, 'asia-south1'), 'joinWaitlist');
 
     // Countdown
     const target = new Date('2026-07-01T00:00:00+05:30');
@@ -430,35 +485,86 @@
     tick();
     setInterval(tick, 1000);
 
-    // Waitlist signup
-    const emailInput = document.getElementById('signup-email');
-    const btn        = document.getElementById('signup-btn');
-    const errorEl    = document.getElementById('signup-error');
-    async function submit() {
-      const email = emailInput.value.trim();
-      errorEl.textContent = '';
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errorEl.textContent = 'Enter a valid email address.';
-        emailInput.focus();
-        return;
-      }
-      btn.disabled = true;
-      btn.textContent = 'Joining…';
-      try {
-        await addDoc(collection(db, 'waitlist'), {
-          email, city: 'Kochi', source: 'launch-page', signedUpAt: serverTimestamp(),
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const ref = new URLSearchParams(location.search).get('ref') || null;
+
+    // Gated live count: show only once it's past a threshold (honest, no fake numbers).
+    const SOCIAL_THRESHOLD = 100;
+    getDoc(doc(db, 'meta', 'waitlist_public')).then(snap => {
+      const n = snap.data()?.count || 0;
+      if (n >= SOCIAL_THRESHOLD) {
+        document.querySelectorAll('[data-social]').forEach(el => {
+          el.innerHTML = `<b>${n.toLocaleString('en-IN')}</b> have already claimed a spot`;
+          el.style.display = 'block';
         });
-        document.getElementById('signup-ui').style.display = 'none';
-        document.getElementById('signup-success').style.display = 'flex';
-      } catch (err) {
-        console.error(err);
-        errorEl.textContent = 'Something went wrong. Please try again.';
-        btn.disabled = false;
-        btn.textContent = 'Join Waitlist →';
       }
+    }).catch(() => {});
+
+    // Shared signup handler across every [data-signup] block (hero + bottom).
+    function showSuccess({ position, referralCode }) {
+      document.getElementById('signup-ui').style.display = 'none';
+      const link = `https://plusone.today/?ref=${referralCode}`;
+      document.getElementById('ref-position').textContent = position ? `#${position}` : '#—';
+      document.getElementById('ref-link').value = link;
+      const msg = encodeURIComponent(`I just claimed a founding spot on PlusOne — find your Plus One for concerts & nights out in Kochi. Join me: ${link}`);
+      document.getElementById('share-wa').href = `https://wa.me/?text=${msg}`;
+      document.getElementById('share-x').href = `https://twitter.com/intent/tweet?text=${msg}`;
+      const success = document.getElementById('signup-success');
+      success.style.display = 'flex';
+      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    btn.addEventListener('click', submit);
-    emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+
+    document.querySelectorAll('[data-signup]').forEach(form => {
+      const input = form.querySelector('[data-email]');
+      const btn   = form.querySelector('[data-submit]');
+      const errEl = form.parentElement.querySelector('[data-error]');
+      const label = btn.innerHTML;
+      async function submit() {
+        const email = input.value.trim();
+        errEl.textContent = '';
+        if (!email || !EMAIL_RE.test(email)) {
+          errEl.textContent = 'Enter a valid email address.';
+          input.focus();
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'Claiming…';
+        try {
+          const res = await joinWaitlist({ email, city: 'Kochi', source: 'launch-page', ref });
+          showSuccess(res.data);
+        } catch (err) {
+          console.error(err);
+          errEl.textContent = err?.message || 'Something went wrong. Please try again.';
+          btn.disabled = false;
+          btn.innerHTML = label;
+        }
+      }
+      btn.addEventListener('click', submit);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    });
+
+    // Copy referral link
+    document.getElementById('ref-copy').addEventListener('click', () => {
+      const el = document.getElementById('ref-link');
+      navigator.clipboard?.writeText(el.value);
+      const c = document.getElementById('ref-copy');
+      c.textContent = 'Copied';
+      setTimeout(() => { c.textContent = 'Copy'; }, 1800);
+    });
+
+    // Sticky CTA: show after hero scrolls out, hide over the signup section.
+    const sticky = document.getElementById('sticky-cta');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.target.classList.contains('hero')) sticky.classList.toggle('show', !e.isIntersecting && window.scrollY > 200 && !signupVisible);
+      });
+    }, { threshold: 0 });
+    let signupVisible = false;
+    io.observe(document.querySelector('.hero'));
+    new IntersectionObserver(es => {
+      signupVisible = es[0].isIntersecting;
+      if (signupVisible) sticky.classList.remove('show');
+    }, { threshold: 0.1 }).observe(document.getElementById('signup'));
   </script>
 </body>
 </html>
