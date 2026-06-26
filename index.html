@@ -182,7 +182,7 @@
       content: ''; position: absolute; inset: 0;
       background:
         linear-gradient(90deg, rgba(13,13,13,0.96) 0%, rgba(13,13,13,0.7) 42%, rgba(13,13,13,0.28) 100%),
-        linear-gradient(0deg, var(--bg) 1%, rgba(13,13,13,0.35) 34%, rgba(13,13,13,0) 72%);
+        linear-gradient(0deg, rgba(13,13,13,0.55) 0%, rgba(13,13,13,0.5) 16%, rgba(13,13,13,0) 58%);
     }
     .hero-top {
       position: absolute; top: 116px; left: var(--pad); right: var(--pad);
@@ -289,9 +289,8 @@
 
     /* ===== TAGLINE STRIP ===== */
     .marquee {
-      border-top: 1px solid var(--gold-line); border-bottom: 1px solid var(--gold-line);
-      padding: 40px var(--pad); text-align: center;
-      background: linear-gradient(180deg, rgba(240,180,41,0.05), transparent);
+      padding: 40px var(--pad); text-align: center; position: relative;
+      background: linear-gradient(180deg, rgba(13,13,13,0.82), rgba(13,13,13,0.82)), url('assets/event-night.png') center 40% / cover no-repeat;
     }
     .mq-quote {
       font-family: 'Courier New', Courier, monospace; font-style: normal; font-weight: 400;
@@ -313,7 +312,7 @@
     .spread-bg { position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; overflow: hidden; pointer-events: none; }
     .spread-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0.32; filter: brightness(0.74) saturate(1.05) contrast(1.03); transform: scale(1.14); will-change: transform; }
     .spread-bg::after { content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, var(--bg) 0%, rgba(13,13,13,0.5) 26%, rgba(13,13,13,0.5) 74%, var(--bg) 100%); }
+      background: linear-gradient(180deg, rgba(13,13,13,0.5) 0%, rgba(13,13,13,0.5) 26%, rgba(13,13,13,0.5) 74%, var(--bg) 100%); }
 
     /* glass cards */
     .cards { display: grid; gap: 16px; }
@@ -332,13 +331,13 @@
     .cards.two { grid-template-columns: 1fr 1fr; }
 
     /* image plate */
-    .plate { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad) 110px; }
-    .plate-inner { position: relative; height: clamp(340px, 52vw, 620px); overflow: hidden; border-radius: var(--r); border: 1px solid var(--gold-line);
+    .plate { max-width: none; margin: 0 0 110px; padding: 0; }
+    .plate-inner { position: relative; height: clamp(420px, 82vh, 920px); overflow: hidden; border-radius: 0; border: none; border-block: 1px solid var(--gold-line);
       background: radial-gradient(ellipse at 30% 20%, rgba(240,180,41,0.12), transparent 55%), linear-gradient(135deg, #17120A, #0D0D0D 62%); }
-    .plate-inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; filter: grayscale(0.2) contrast(1.05); transition: transform 1.2s var(--ease); }
+    .plate-inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; opacity: 0.92; filter: grayscale(0.06) saturate(1.02) brightness(0.98) contrast(1.04); transition: transform 1.2s var(--ease); }
     .plate-inner:hover img { transform: scale(1.04); }
-    .plate-inner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(13,13,13,0.7) 0%, rgba(13,13,13,0.2) 50%, rgba(13,13,13,0.85) 100%), radial-gradient(ellipse at 30% 90%, rgba(240,180,41,0.12), transparent 60%); }
-    .plate-cap { position: absolute; z-index: 2; bottom: 40px; left: 40px; right: 40px; }
+    .plate-inner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,13,13,0.55) 0%, transparent 32%, transparent 55%, rgba(13,13,13,0.82) 100%), radial-gradient(ellipse at 50% 75%, rgba(240,180,41,0.12), transparent 60%); }
+    .plate-cap { position: absolute; z-index: 2; bottom: 48px; left: var(--pad); right: var(--pad); max-width: var(--maxw); margin: 0 auto; }
     .plate-quote { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: clamp(1.8rem, 4vw, 3.4rem); line-height: 1.1; letter-spacing: -0.01em; max-width: 760px; }
     .plate-quote em { color: var(--gold); }
     .plate-by { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-secondary); margin-top: 16px; }
@@ -419,12 +418,34 @@
       .aurora::before, .aurora::after, .aurora .core, .scroll-cue .line, .cta-social .dot { animation: none !important; }
       .embers { display: none !important; }
       html.js .reveal, html.js .hero-anim { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+      html.js .reveal-words .w > .i { transform: none !important; transition: none !important; }
+      .spotlight { display: none !important; }
       .card:hover, .plate-inner:hover img, .field button:hover, .nav-join:hover, .sticky-cta a:hover { transform: none !important; }
     }
+
+    /* ===== CURSOR SPOTLIGHT (soft gold light tracking the pointer) ===== */
+    .spotlight {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0;
+      transition: opacity 0.5s var(--ease);
+      background: radial-gradient(circle 460px at var(--mx, 50%) var(--my, -30%),
+        rgba(240,180,41,0.10), rgba(240,180,41,0.04) 38%, transparent 64%);
+    }
+    .spotlight.on { opacity: 1; }
+
+    /* magnetic CTAs — smooth snap-back */
+    .nav-join, .sticky-cta a { will-change: transform; }
+
+    /* ===== WORD-BY-WORD MASK REVEAL (editorial heading rise) ===== */
+    html.js .reveal-words .w { display: inline-block; overflow: hidden; vertical-align: top;
+      padding: 0.06em 0.08em 0.18em; margin: -0.06em -0.08em -0.18em; }
+    html.js .reveal-words .w > .i { display: inline-block; transform: translateY(115%);
+      transition: transform 0.7s var(--ease); will-change: transform; }
+    html.js .reveal-words.in .w > .i { transform: none; }
   </style>
 </head>
 <body>
   <div class="aurora"><span class="core"></span></div>
+  <div class="spotlight" aria-hidden="true"></div>
   <div class="embers"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="vignette"></div>
   <div class="grain"></div>
@@ -443,7 +464,7 @@
   <main class="page">
   <span id="top"></span>
   <section class="hero">
-    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80&auto=format&fit=crop" alt="" aria-hidden="true" data-parallax="0.06"></div>
+    <div class="hero-bg"><img src="assets/event-night.png" alt="" aria-hidden="true" data-parallax="0.06"></div>
     <div class="hero-glow"></div>
     <div class="hero-top">
       <span></span>
@@ -482,7 +503,7 @@
   </div>
 
   <section class="spread" id="how">
-    <div class="spread-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1920&q=80&auto=format&fit=crop" alt="" data-parallax="0.05"></div>
+    <div class="spread-bg" aria-hidden="true"><img src="assets/event-night.png" alt="" data-parallax="0.05"></div>
     <aside class="spread-aside sticky reveal">
       <div class="spread-index">01</div>
       <div class="spread-label">How it works</div>
@@ -511,7 +532,7 @@
 
   <div class="plate">
     <div class="plate-inner reveal">
-      <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&q=80&fit=crop" alt="Concert crowd at night" loading="lazy">
+      <img src="assets/event-golden.jpg" alt="Crowd with raised hands under golden stage lights at a live event" loading="lazy">
       <div class="plate-cap">
         <p class="plate-quote">Every match begins at a <em>real event</em> &mdash; a concert, a festival, a night you&rsquo;d remember anyway.</p>
         <p class="plate-by">PlusOne &mdash; Event-first by design</p>
@@ -520,6 +541,7 @@
   </div>
 
   <section class="spread" id="safety">
+    <div class="spread-bg" aria-hidden="true"><img src="assets/event-night.png" alt="" style="object-position: center 18%;" data-parallax="0.05"></div>
     <aside class="spread-aside sticky reveal">
       <div class="spread-index">02</div>
       <div class="spread-label">Safety is the architecture</div>
