@@ -176,7 +176,7 @@
     }
     /* photographic hero background (nightlife), darkened + faded into the page */
     .hero-bg { position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -2; overflow: hidden; pointer-events: none; }
-    .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 35%; opacity: 0.6; filter: contrast(1.05) saturate(1.1) sepia(0.18) brightness(0.96); }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 35%; opacity: 0.6; filter: contrast(1.05) saturate(1.1) sepia(0.18) brightness(0.96); transform: scale(1.14); will-change: transform; }
     .hero-bg::before { content: ''; position: absolute; inset: 0; z-index: 1; mix-blend-mode: overlay; background: radial-gradient(ellipse at 70% 32%, rgba(240,180,41,0.45), transparent 68%); }
     .hero-bg::after {
       content: ''; position: absolute; inset: 0;
@@ -311,7 +311,7 @@
     /* full-bleed photographic backdrop for the How-it-works spread (darkened, blends into page) */
     #how { position: relative; }
     .spread-bg { position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; overflow: hidden; pointer-events: none; }
-    .spread-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0.32; filter: brightness(0.74) saturate(1.05) contrast(1.03); }
+    .spread-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0.32; filter: brightness(0.74) saturate(1.05) contrast(1.03); transform: scale(1.14); will-change: transform; }
     .spread-bg::after { content: ''; position: absolute; inset: 0;
       background: linear-gradient(180deg, var(--bg) 0%, rgba(13,13,13,0.5) 26%, rgba(13,13,13,0.5) 74%, var(--bg) 100%); }
 
@@ -443,7 +443,7 @@
   <main class="page">
   <span id="top"></span>
   <section class="hero">
-    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80&auto=format&fit=crop" alt="" aria-hidden="true"></div>
+    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80&auto=format&fit=crop" alt="" aria-hidden="true" data-parallax="0.06"></div>
     <div class="hero-glow"></div>
     <div class="hero-top">
       <span></span>
@@ -482,7 +482,7 @@
   </div>
 
   <section class="spread" id="how">
-    <div class="spread-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1920&q=80&auto=format&fit=crop" alt=""></div>
+    <div class="spread-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1920&q=80&auto=format&fit=crop" alt="" data-parallax="0.05"></div>
     <aside class="spread-aside sticky reveal">
       <div class="spread-index">01</div>
       <div class="spread-label">How it works</div>
@@ -721,11 +721,33 @@
       if (signupVisible) sticky.classList.remove('show');
     }, { threshold: 0.1 }).observe(document.getElementById('signup'));
 
-    // Topbar glass on scroll
+    // Minimal parallax: drift the background photos slower than the scroll. Bounded by the
+    // base scale(1.14) headroom so edges never show; skipped under reduced-motion.
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const pxItems = [...document.querySelectorAll('[data-parallax]')]
+      .map(el => ({ el, box: el.parentElement, speed: parseFloat(el.dataset.parallax) || 0.06 }));
+    let pxTick = false;
+    function parallax() {
+      const vh = window.innerHeight;
+      for (const it of pxItems) {
+        const r = it.box.getBoundingClientRect();
+        if (r.bottom < -80 || r.top > vh + 80) continue; // off-screen → skip
+        const offset = (vh / 2 - (r.top + r.height / 2)) * it.speed;
+        it.el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0) scale(1.14)`;
+      }
+      pxTick = false;
+    }
+
+    // Topbar glass on scroll (+ parallax tick)
     const topbar = document.getElementById('topbar');
-    const onScroll = () => topbar.classList.toggle('scrolled', window.scrollY > 40);
+    const onScroll = () => {
+      topbar.classList.toggle('scrolled', window.scrollY > 40);
+      if (!reduceMotion && pxItems.length && !pxTick) { pxTick = true; requestAnimationFrame(parallax); }
+    };
     onScroll();
+    if (!reduceMotion) parallax();
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => { if (!reduceMotion) parallax(); }, { passive: true });
 
     // Scroll reveal (staggered per group)
     const revealIO = new IntersectionObserver((entries, obs) => {
