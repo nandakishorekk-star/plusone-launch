@@ -119,17 +119,21 @@
     .hero-cta-note { font-size: 0.78rem; color: var(--text-secondary); }
     .hero-cta-note b { color: var(--gold); font-weight: 600; }
 
-    /* ===== MARQUEE (designed banner strip) ===== */
+    /* ===== TAGS STRIP (static) ===== */
     .marquee {
-      overflow: hidden;
       border-top: 1px solid var(--gold-line); border-bottom: 1px solid var(--gold-line);
-      background: var(--bg);
+      padding: 28px var(--pad); background: linear-gradient(180deg, rgba(240,180,41,0.05), transparent);
     }
-    .marquee-track { display: flex; width: max-content; animation: scroll 45s linear infinite; }
-    .marquee:hover .marquee-track { animation-play-state: paused; }
-    .marquee-track img { display: block; height: clamp(110px, 17vw, 230px); width: auto; }
-    @keyframes scroll { to { transform: translateX(-50%); } }
-    @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+    .marquee-row {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      max-width: var(--maxw); margin: 0 auto;
+    }
+    .mq-item {
+      font-family: var(--font-display); font-style: italic; font-weight: 400;
+      font-size: clamp(1.3rem, 2.6vw, 2.2rem); color: var(--gold);
+      padding: 0 clamp(16px, 3vw, 38px);
+    }
+    .mq-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex: none; }
 
     /* ===== EDITORIAL SPREAD ===== */
     .spread { display: grid; grid-template-columns: 220px 1fr; gap: 56px; padding: 100px var(--pad); max-width: var(--maxw); margin: 0 auto; border-top: 1px solid var(--border); }
@@ -275,10 +279,12 @@
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <img src="marquee.png" alt="We don't chase moments, we collect memories — concerts, festivals, nights out, memorable nights">
-      <img src="marquee.png" alt="">
+  <div class="marquee">
+    <div class="marquee-row">
+      <span class="mq-item">Concerts</span><span class="mq-dot"></span>
+      <span class="mq-item">Memorable Nights</span><span class="mq-dot"></span>
+      <span class="mq-item">Festivals</span><span class="mq-dot"></span>
+      <span class="mq-item">Raves</span>
     </div>
   </div>
 
