@@ -509,7 +509,7 @@
       <div class="spread-label">How it works</div>
     </aside>
     <div>
-      <h2 class="spread-title reveal">Three steps to your <em>night out</em></h2>
+      <h2 class="spread-title reveal-words">Three steps to your <em>night out</em></h2>
       <div class="cards">
         <div class="card reveal">
           <div class="card-no">i</div>
@@ -547,7 +547,7 @@
       <div class="spread-label">Safety is the architecture</div>
     </aside>
     <div>
-      <h2 class="spread-title reveal">Built so women feel <em>safe</em>, always.</h2>
+      <h2 class="spread-title reveal-words">Built so women feel <em>safe</em>, always.</h2>
       <div class="cards two">
         <div class="card reveal"><h3 class="card-h">KYC verified</h3><p class="card-p">Selfie + ID verification before anyone can connect. Real people only &mdash; no anonymous accounts.</p></div>
         <div class="card reveal"><h3 class="card-h">Women decide</h3><p class="card-p">Men can express interest, never initiate. The match is always her choice, and only she can open a chat.</p></div>
@@ -563,7 +563,7 @@
       <div class="spread-label">Where it happens</div>
     </aside>
     <div>
-      <h2 class="spread-title reveal">Starting in <em>Kochi</em>, rolling across Kerala.</h2>
+      <h2 class="spread-title reveal-words">Starting in <em>Kochi</em>, rolling across Kerala.</h2>
       <div class="leaders">
         <div class="leader live reveal"><span class="leader-name">Kochi</span><span class="leader-fill"></span><span class="leader-status">Launching July 15</span></div>
         <div class="leader reveal"><span class="leader-name">Thrissur</span><span class="leader-fill"></span><span class="leader-status">Next up</span></div>
@@ -783,6 +783,50 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+    // Word-by-word mask reveal: wrap each word (preserving inline <em>) in a masked span,
+    // stagger the rise. Same observer adds .in when the heading scrolls into view.
+    function makeWord(content, i, isEl) {
+      const w = document.createElement('span'); w.className = 'w';
+      const inner = document.createElement('span'); inner.className = 'i';
+      inner.style.transitionDelay = (i * 55) + 'ms';
+      if (isEl) inner.appendChild(content); else inner.textContent = content;
+      w.appendChild(inner); return w;
+    }
+    function splitWords(el) {
+      const nodes = [...el.childNodes]; el.innerHTML = ''; let i = 0;
+      nodes.forEach(node => {
+        if (node.nodeType === 3) {
+          node.textContent.split(/(\s+)/).forEach(tok => {
+            if (tok === '') return;
+            if (/^\s+$/.test(tok)) el.appendChild(document.createTextNode(' '));
+            else el.appendChild(makeWord(tok, i++));
+          });
+        } else { el.appendChild(makeWord(node, i++, true)); }
+      });
+    }
+    document.querySelectorAll('.reveal-words').forEach(el => { splitWords(el); revealIO.observe(el); });
+
+    // Cursor spotlight + magnetic CTAs — fine pointers only, never under reduced-motion.
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion) {
+      const spot = document.querySelector('.spotlight');
+      let sx = 0, sy = 0, sTick = false;
+      const moveSpot = () => { spot.style.setProperty('--mx', sx + 'px'); spot.style.setProperty('--my', sy + 'px'); sTick = false; };
+      window.addEventListener('pointermove', e => {
+        sx = e.clientX; sy = e.clientY; spot.classList.add('on');
+        if (!sTick) { sTick = true; requestAnimationFrame(moveSpot); }
+      }, { passive: true });
+      document.addEventListener('mouseleave', () => spot.classList.remove('on'));
+
+      document.querySelectorAll('.nav-join, .sticky-cta a').forEach(btn => {
+        const s = 0.35;
+        btn.addEventListener('pointermove', e => {
+          const r = btn.getBoundingClientRect();
+          btn.style.transform = `translate(${((e.clientX - (r.left + r.width / 2)) * s).toFixed(1)}px, ${((e.clientY - (r.top + r.height / 2)) * s).toFixed(1)}px)`;
+        });
+        btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+      });
+    }
   </script>
 </body>
 </html>
