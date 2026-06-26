@@ -299,6 +299,12 @@
     .spread-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-secondary); }
     .spread-title { font-family: var(--font-display); font-weight: 300; font-size: clamp(2.2rem, 4vw, 3.6rem); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 44px; }
     .spread-title em { font-style: italic; color: var(--gold); }
+    /* full-bleed photographic backdrop for the How-it-works spread (darkened, blends into page) */
+    #how { position: relative; }
+    .spread-bg { position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; overflow: hidden; pointer-events: none; }
+    .spread-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0.32; filter: brightness(0.74) saturate(1.05) contrast(1.03); }
+    .spread-bg::after { content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, var(--bg) 0%, rgba(13,13,13,0.5) 26%, rgba(13,13,13,0.5) 74%, var(--bg) 100%); }
 
     /* glass cards */
     .cards { display: grid; gap: 16px; }
@@ -467,6 +473,7 @@
   </div>
 
   <section class="spread" id="how">
+    <div class="spread-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1920&q=80&auto=format&fit=crop" alt=""></div>
     <aside class="spread-aside sticky reveal">
       <div class="spread-index">01</div>
       <div class="spread-label">How it works</div>
