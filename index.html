@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    document.documentElement.classList.add('js');
+    // Always open at the top on (re)load — don't restore previous scroll position.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.addEventListener('pageshow', function () { if (!location.hash) window.scrollTo(0, 0); });
+  </script>
   <meta name="description" content="PlusOne — Find your Plus One for concerts, festivals, and nights out across Kerala. Women stay in control. Launching July 15, 2026.">
   <meta name="theme-color" content="#0D0D0D">
   <meta property="og:title" content="PlusOne — Find your Plus One">
@@ -43,7 +48,11 @@
 
     html { scroll-behavior: smooth; }
     body {
-      background: var(--bg); color: var(--text);
+      /* one continuous canvas from the hero (01) to the footer — near-black with faint
+         warm shifts so section-to-section transitions never feel like separate pages */
+      background: linear-gradient(180deg,
+        #0D0D0D 0%, #110E09 22%, #0C0C0A 45%, #110E08 68%, #0C0B09 86%, #0D0D0D 100%);
+      background-color: var(--bg); color: var(--text);
       font-family: var(--font-body); font-size: 16px; line-height: 1.6;
       overflow-x: hidden; -webkit-font-smoothing: antialiased;
     }
@@ -347,7 +356,7 @@
     .leader.live .leader-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); }
 
     /* countdown editorial */
-    .countdown-spread { text-align: center; padding: 120px var(--pad); border-top: 1px solid var(--border); background: linear-gradient(180deg, var(--bg), #100E05 50%, var(--bg)); }
+    .countdown-spread { text-align: center; padding: 120px var(--pad); border-top: 1px solid var(--border); background: transparent; }
     .countdown-kick { font-family: var(--font-display); font-style: italic; font-size: clamp(1.4rem, 3vw, 2.2rem); color: var(--text-secondary); font-weight: 300; margin-bottom: 48px; }
     .countdown-kick em { color: var(--gold); }
     .countdown-row { display: inline-flex; align-items: stretch; gap: clamp(10px, 2vw, 22px); flex-wrap: wrap; justify-content: center; }
