@@ -165,6 +165,16 @@
       width: 120%; height: 70%; pointer-events: none; z-index: -1;
       background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(240,180,41,0.12), transparent 70%);
     }
+    /* photographic hero background (nightlife), darkened + faded into the page */
+    .hero-bg { position: absolute; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 35%; opacity: 0.6; filter: contrast(1.05) saturate(1.1) sepia(0.18) brightness(0.96); }
+    .hero-bg::before { content: ''; position: absolute; inset: 0; z-index: 1; mix-blend-mode: overlay; background: radial-gradient(ellipse at 70% 32%, rgba(240,180,41,0.45), transparent 68%); }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background:
+        linear-gradient(90deg, rgba(13,13,13,0.96) 0%, rgba(13,13,13,0.7) 42%, rgba(13,13,13,0.28) 100%),
+        linear-gradient(0deg, var(--bg) 1%, rgba(13,13,13,0.35) 34%, rgba(13,13,13,0) 72%);
+    }
     .hero-top {
       position: absolute; top: 116px; left: var(--pad); right: var(--pad);
       display: flex; justify-content: space-between; align-items: baseline;
@@ -418,6 +428,7 @@
   <main class="page">
   <span id="top"></span>
   <section class="hero">
+    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80&auto=format&fit=crop" alt="" aria-hidden="true"></div>
     <div class="hero-glow"></div>
     <div class="hero-top">
       <span class="hero-kicker hero-anim d1">Issue 01 &mdash; <em>The Kochi Edition</em></span>
