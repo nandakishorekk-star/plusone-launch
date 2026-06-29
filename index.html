@@ -113,6 +113,12 @@
     .embers i:nth-child(11) { left: 40%; top: 95%; width: 5px;  height: 5px;  --o: 0.6;  animation-duration: 26s; animation-delay: 13s; }
     .embers i:nth-child(12) { left: 78%; top: 88%; width: 8px;  height: 8px;  --o: 0.45; animation-duration: 21s; animation-delay: 5s; }
 
+    /* procedural WebGL light-trail shader — amber streaks, mouse-reactive. Sits above the
+       CSS aurora/embers (which stay as a static fallback) and below .page. Additive blend. */
+    #shader { position: fixed; inset: 0; z-index: 0; pointer-events: none; display: block;
+      width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s var(--ease); }
+    #shader.on { opacity: 1; }
+
     /* depth vignette */
     .vignette { position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background: radial-gradient(ellipse 80% 70% at 50% 34%, transparent 42%, rgba(0,0,0,0.45) 100%); }
@@ -447,6 +453,7 @@
   <div class="aurora"><span class="core"></span></div>
   <div class="spotlight" aria-hidden="true"></div>
   <div class="embers"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <canvas id="shader" aria-hidden="true"></canvas>
   <div class="vignette"></div>
   <div class="grain"></div>
   <div class="frame"></div>
@@ -831,6 +838,95 @@
         btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
       });
     }
+
+    // ===== PROCEDURAL WEBGL BACKGROUND — amber light-trail shader, mouse-reactive =====
+    // Fragment shader draws rhythmic glowing streaks via fbm-warped glow lines, additively
+    // blended over the dark page. Skipped under reduced-motion or if WebGL is unavailable —
+    // the CSS aurora/embers remain as the fallback. ponytail: single full-screen quad, no libs.
+    (function initShader() {
+      if (reduceMotion) return;
+      const canvas = document.getElementById('shader');
+      const gl = canvas.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: false });
+      if (!gl) return; // graceful fallback to CSS layers
+
+      const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
+      const fs = `
+        precision highp float;
+        uniform vec2 u_res; uniform float u_time; uniform vec2 u_mouse;
+        float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+        float noise(vec2 p){
+          vec2 i=floor(p), f=fract(p); vec2 u=f*f*(3.0-2.0*f);
+          return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x),
+                     mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x),u.y);
+        }
+        float fbm(vec2 p){ float a=0.5,v=0.0; for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.0; a*=0.5; } return v; }
+        void main(){
+          vec2 uv=(gl_FragCoord.xy-0.5*u_res)/u_res.y;
+          vec2 m=(u_mouse-0.5)*vec2(u_res.x/u_res.y,1.0);
+          float t=u_time*0.12;
+          float md=length(uv-m);
+          float warpY=(uv.y-m.y)*exp(-md*1.6)*0.22; // streaks bend toward the cursor
+          float glow=0.0;
+          for(int i=0;i<6;i++){
+            float fi=float(i);
+            float flow=fbm(vec2(uv.x*1.3 + t + fi*1.7, fi*3.1 + t*0.5));
+            float yc=uv.y + warpY + (flow-0.5)*1.5 + sin(uv.x*2.0 + t + fi)*0.16;
+            float pulse=0.55+0.45*sin(t*3.0 + fi*1.3 + uv.x*1.6); // rhythmic brightness
+            glow += (0.011/(abs(yc)+0.02)) * pulse;
+          }
+          glow *= smoothstep(1.25,0.15,abs(uv.x)); // soften toward left/right edges
+          glow += 0.06*exp(-md*3.5);               // halo around the pointer
+          vec3 amber=vec3(1.0,0.62,0.13);
+          vec3 col=pow(amber*glow, vec3(0.85));
+          gl_FragColor=vec4(col, max(max(col.r,col.g),col.b));
+        }`;
+
+      function compile(type, src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+      const prog=gl.createProgram();
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+      gl.useProgram(prog);
+
+      const buf=gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+      const loc=gl.getAttribLocation(prog,'p');
+      gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+      gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE); // additive over the dark page
+
+      const uRes=gl.getUniformLocation(prog,'u_res');
+      const uTime=gl.getUniformLocation(prog,'u_time');
+      const uMouse=gl.getUniformLocation(prog,'u_mouse');
+
+      function resize(){
+        const dpr=Math.min(devicePixelRatio||1, 1.5);
+        canvas.width=Math.floor(innerWidth*dpr); canvas.height=Math.floor(innerHeight*dpr);
+        gl.viewport(0,0,canvas.width,canvas.height);
+      }
+      resize();
+      addEventListener('resize', resize, { passive: true });
+
+      let mx=0.5, my=0.5, tx=0.5, ty=0.5;
+      addEventListener('pointermove', e => { tx=e.clientX/innerWidth; ty=1.0-e.clientY/innerHeight; }, { passive: true });
+
+      let running=true;
+      document.addEventListener('visibilitychange', () => { running=!document.hidden; if(running) requestAnimationFrame(frame); });
+
+      const start=performance.now();
+      requestAnimationFrame(() => canvas.classList.add('on'));
+      function frame(now){
+        if(!running) return;
+        mx+=(tx-mx)*0.06; my+=(ty-my)*0.06; // eased pointer follow
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uTime, (now-start)/1000);
+        gl.uniform2f(uMouse, mx, my);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    })();
   </script>
 </body>
 </html>
