@@ -768,10 +768,11 @@
       // Returning email → tell them they're already on the list and show the live count.
       if (alreadyJoined) {
         document.querySelector('.signup-success-text').innerHTML = 'You&rsquo;re already on the list. &#10022;';
-        const count = total ? `<b>${total.toLocaleString('en-IN')}</b> already on the waitlist` : 'and counting';
+        // Only surface the count once it's past the same honest threshold as the live counter.
+        const count = (total >= SOCIAL_THRESHOLD) ? ` &mdash; <b>${total.toLocaleString('en-IN')}</b> already on the waitlist` : '';
         document.querySelector('.signup-success-sub').innerHTML = position
-          ? `You&rsquo;re <b>#${position}</b> of Kochi&rsquo;s founding members &mdash; ${count}.`
-          : `You&rsquo;re one of Kochi&rsquo;s founding members &mdash; ${count}.`;
+          ? `You&rsquo;re <b>#${position}</b> of Kochi&rsquo;s founding members${count}.`
+          : `You&rsquo;re one of Kochi&rsquo;s founding members${count}.`;
       } else {
         document.querySelector('.signup-success-text').innerHTML = 'You&rsquo;re in. &#10022;';
         document.querySelector('.signup-success-sub').innerHTML = `You&rsquo;re <b id="ref-position">${pos}</b> of Kochi&rsquo;s founding members.`;
