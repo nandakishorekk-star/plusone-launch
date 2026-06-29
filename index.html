@@ -761,10 +761,20 @@
     }).catch(() => {});
 
     // Shared signup handler across every [data-signup] block (hero + bottom).
-    function showSuccess({ position, referralCode }) {
+    function showSuccess({ position, referralCode, total, alreadyJoined }) {
       document.getElementById('signup-ui').style.display = 'none';
       const link = `https://plusone.today/?ref=${referralCode}`;
-      document.getElementById('ref-position').textContent = position ? `#${position}` : '#—';
+      const pos = position ? `#${position}` : '#—';
+      // Returning email → tell them they're already on the list and show the live count.
+      if (alreadyJoined) {
+        document.querySelector('.signup-success-text').innerHTML = 'You&rsquo;re already on the list. &#10022;';
+        document.querySelector('.signup-success-sub').innerHTML =
+          `You&rsquo;re <b>${pos}</b> of Kochi&rsquo;s founding members` +
+          (total ? ` &mdash; <b>${total.toLocaleString('en-IN')}</b> already on the waitlist.` : '.');
+      } else {
+        document.querySelector('.signup-success-text').innerHTML = 'You&rsquo;re in. &#10022;';
+        document.querySelector('.signup-success-sub').innerHTML = `You&rsquo;re <b id="ref-position">${pos}</b> of Kochi&rsquo;s founding members.`;
+      }
       document.getElementById('ref-link').value = link;
       const msg = encodeURIComponent(`I just claimed a founding spot on PlusOne — find your Plus One for concerts & nights out in Kochi. Join me: ${link}`);
       document.getElementById('share-wa').href = `https://wa.me/?text=${msg}`;
