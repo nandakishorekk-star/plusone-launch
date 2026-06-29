@@ -471,7 +471,6 @@
   <main class="page">
   <span id="top"></span>
   <section class="hero">
-    <div class="hero-bg"><img src="assets/event-night.png" alt="" aria-hidden="true" data-parallax="0.06"></div>
     <div class="hero-glow"></div>
     <div class="hero-top">
       <span></span>
@@ -510,7 +509,6 @@
   </div>
 
   <section class="spread" id="how">
-    <div class="spread-bg" aria-hidden="true"><img src="assets/event-night.png" alt="" data-parallax="0.05"></div>
     <aside class="spread-aside sticky reveal">
       <div class="spread-index">01</div>
       <div class="spread-label">How it works</div>
@@ -548,7 +546,6 @@
   </div>
 
   <section class="spread" id="safety">
-    <div class="spread-bg" aria-hidden="true"><img src="assets/event-night.png" alt="" style="object-position: center 18%;" data-parallax="0.05"></div>
     <aside class="spread-aside sticky reveal">
       <div class="spread-index">02</div>
       <div class="spread-label">Safety is the architecture</div>
@@ -565,7 +562,6 @@
   </section>
 
   <section class="spread" id="cities">
-    <div class="spread-bg" aria-hidden="true"><img src="assets/event-golden.jpg" alt="" style="object-position: center 65%;" data-parallax="0.05"></div>
     <aside class="spread-aside sticky reveal">
       <div class="spread-index">03</div>
       <div class="spread-label">Where it happens</div>
@@ -583,7 +579,6 @@
   </section>
 
   <section class="countdown-spread">
-    <div class="spread-bg" aria-hidden="true"><img src="assets/event-night.png" alt="" style="object-position: center 30%;" data-parallax="0.05"></div>
     <p class="countdown-kick reveal">Launching in <em>exactly</em></p>
     <div class="countdown-row reveal" id="countdown-grid">
       <div class="cd-unit"><div class="cd-num" id="cd-days">00</div><div class="cd-lab">Days</div></div>
@@ -595,7 +590,6 @@
   </section>
 
   <section class="signup" id="signup">
-    <div class="spread-bg" aria-hidden="true"><img src="assets/event-golden.jpg" alt="" style="object-position: center 75%;" data-parallax="0.05"></div>
     <p class="signup-kick reveal">Founding members &mdash; early access</p>
     <h2 class="signup-head reveal">Be first in <em>Kochi.</em></h2>
     <p class="signup-sub reveal">Drop your email and claim a founding spot. We&rsquo;ll reach you before anyone else.</p>
@@ -859,7 +853,7 @@
           return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x),
                      mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x),u.y);
         }
-        float fbm(vec2 p){ float a=0.5,v=0.0; for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.0; a*=0.5; } return v; }
+        float fbm(vec2 p){ float a=0.5,v=0.0; for(int i=0;i<3;i++){ v+=a*noise(p); p*=2.0; a*=0.5; } return v; }
         void main(){
           vec2 uv=(gl_FragCoord.xy-0.5*u_res)/u_res.y;
           vec2 m=(u_mouse-0.5)*vec2(u_res.x/u_res.y,1.0);
@@ -901,7 +895,7 @@
       const uMouse=gl.getUniformLocation(prog,'u_mouse');
 
       function resize(){
-        const dpr=Math.min(devicePixelRatio||1, 1.5);
+        const dpr=Math.min(devicePixelRatio||1, 1.25);
         canvas.width=Math.floor(innerWidth*dpr); canvas.height=Math.floor(innerHeight*dpr);
         gl.viewport(0,0,canvas.width,canvas.height);
       }
