@@ -745,7 +745,6 @@
     setInterval(tick, 1000);
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const ref = new URLSearchParams(location.search).get('ref') || null;
 
     // Gated live count: show only once it's past a threshold (honest, no fake numbers).
     const SOCIAL_THRESHOLD = 100;
@@ -807,7 +806,7 @@
         btn.disabled = true;
         btn.innerHTML = '<span class="btn-spinner"></span>Claiming…';
         try {
-          const res = await joinWaitlist({ email, city: 'Kochi', source: 'launch-page', ref });
+          const res = await joinWaitlist({ email, city: 'Kochi', source: 'launch-page' });
           showSuccess(res.data);
         } catch (err) {
           console.error(err);
