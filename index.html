@@ -678,14 +678,14 @@
       <div class="signup-success-text">You&rsquo;re in. &#10022;</div>
       <div class="signup-success-sub">You&rsquo;re <b id="ref-position">#&mdash;</b> of Kochi&rsquo;s founding members.</div>
       <div class="ref-line">
-        <input id="ref-link" readonly value="" aria-label="Your referral link">
+        <input id="ref-link" readonly value="" aria-label="PlusOne link">
         <button class="ref-copy" id="ref-copy" type="button">Copy</button>
       </div>
       <div class="ref-share">
         <a id="share-wa" target="_blank" rel="noopener">Share on WhatsApp</a>
         <a id="share-x" target="_blank" rel="noopener">Share on X</a>
       </div>
-      <p class="signup-success-move">Every friend who joins moves you up the line &mdash; and unlocks earlier access.</p>
+      <p class="signup-success-move">Share PlusOne with friends who&rsquo;d love a night out &mdash; the more of us, the better the nights.</p>
     </div>
   </section>
 
@@ -761,9 +761,9 @@
     }).catch(() => {});
 
     // Shared signup handler across every [data-signup] block (hero + bottom).
-    function showSuccess({ position, referralCode, total, alreadyJoined }) {
+    function showSuccess({ position, total, alreadyJoined }) {
       document.getElementById('signup-ui').style.display = 'none';
-      const link = `https://plusone.today/?ref=${referralCode}`;
+      const link = 'https://plusone.today';
       const pos = position ? `#${position}` : '#—';
       // Returning email → tell them they're already on the list and show the live count.
       if (alreadyJoined) {
@@ -778,7 +778,7 @@
         document.querySelector('.signup-success-sub').innerHTML = `You&rsquo;re <b id="ref-position">${pos}</b> of Kochi&rsquo;s founding members.`;
       }
       document.getElementById('ref-link').value = link;
-      const msg = encodeURIComponent(`I just claimed a founding spot on PlusOne — find your Plus One for concerts & nights out in Kochi. Join me: ${link}`);
+      const msg = encodeURIComponent(`I just claimed a founding spot on PlusOne — find your Plus One for concerts & nights out in Kochi. Check it out: ${link}`);
       document.getElementById('share-wa').href = `https://wa.me/?text=${msg}`;
       document.getElementById('share-x').href = `https://twitter.com/intent/tweet?text=${msg}`;
       const success = document.getElementById('signup-success');
