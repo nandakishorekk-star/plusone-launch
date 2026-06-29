@@ -248,6 +248,16 @@
     .field button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(240,180,41,0.34); }
     .field button:disabled { opacity: 0.55; cursor: not-allowed; }
 
+    /* light sweep across the gold CTAs on hover */
+    .field button, .nav-join, .sticky-cta a { position: relative; overflow: hidden; }
+    .field button::after, .nav-join::after, .sticky-cta a::after {
+      content: ''; position: absolute; top: 0; left: -130%; width: 55%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.5), transparent);
+      transform: skewX(-18deg); pointer-events: none;
+    }
+    .field button:hover:not(:disabled)::after, .nav-join:hover::after, .sticky-cta a:hover::after { animation: sheen 0.8s var(--ease); }
+    @keyframes sheen { from { left: -130%; } to { left: 150%; } }
+
     /* shared CTA microcopy */
     .cta-scarcity { font-size: 0.82rem; color: #A5A5A5; }
     .cta-scarcity b { color: var(--gold); font-weight: 600; }
@@ -343,11 +353,16 @@
     .card {
       position: relative; background: var(--glass); border: 1px solid var(--glass-line); border-radius: var(--r);
       padding: 30px 30px 32px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); overflow: hidden;
-      transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+      transform-style: preserve-3d; will-change: transform;
+      transition: transform 0.25s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
     }
     .card::before { content: ''; position: absolute; inset: 0; border-radius: var(--r); padding: 1px; background: linear-gradient(135deg, rgba(240,180,41,0.4), transparent 40%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity 0.4s var(--ease); }
+    /* gold sheen that tracks the pointer across the card */
+    .card::after { content: ''; position: absolute; inset: 0; border-radius: var(--r); pointer-events: none; opacity: 0;
+      background: radial-gradient(circle 200px at var(--cx, 50%) var(--cy, 50%), rgba(240,180,41,0.16), transparent 58%);
+      transition: opacity 0.4s var(--ease); }
     .card:hover { transform: translateY(-4px); border-color: transparent; box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(240,180,41,0.12); }
-    .card:hover::before { opacity: 1; }
+    .card:hover::before, .card:hover::after { opacity: 1; }
     .card-no { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: 2.4rem; color: var(--gold); line-height: 1; margin-bottom: 14px; }
     .card-h { font-family: var(--font-display); font-size: 1.7rem; font-weight: 400; margin-bottom: 8px; }
     .card-p { font-size: 0.92rem; color: #9C9C9C; font-weight: 300; line-height: 1.7; }
@@ -385,6 +400,9 @@
     .countdown-row { display: inline-flex; align-items: stretch; gap: clamp(10px, 2vw, 22px); flex-wrap: wrap; justify-content: center; }
     .cd-unit { display: flex; flex-direction: column; align-items: center; gap: 14px; min-width: clamp(80px, 16vw, 160px); padding: 26px 18px; background: var(--glass); border: 1px solid var(--glass-line); border-radius: var(--r); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
     .cd-num { font-family: var(--font-display); font-weight: 300; font-size: clamp(3.4rem, 9vw, 7rem); line-height: 0.8; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+    /* digit rolls + flashes gold when it changes — keeps the countdown feeling live */
+    @keyframes cdroll { 0% { transform: translateY(-46%); opacity: 0; color: var(--gold); } 100% { transform: none; opacity: 1; } }
+    .cd-num.flip { animation: cdroll 0.45s var(--ease); }
     .cd-lab { font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-secondary); }
     #countdown-done { display: none; font-family: var(--font-display); font-style: italic; font-size: clamp(2.5rem, 6vw, 5rem); color: var(--gold); }
 
@@ -672,6 +690,13 @@
     // Countdown
     const target = new Date('2026-07-15T00:00:00+05:30');
     const pad = n => String(n).padStart(2, '0');
+    // only re-render + roll a digit when it actually changes
+    const setNum = (el, val) => {
+      if (el.textContent === val) return;
+      el.textContent = val;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      el.classList.remove('flip'); void el.offsetWidth; el.classList.add('flip');
+    };
     function tick() {
       const diff = target - Date.now();
       if (diff <= 0) {
@@ -679,10 +704,10 @@
         document.getElementById('countdown-done').style.display = 'block';
         return;
       }
-      document.getElementById('cd-days').textContent  = pad(Math.floor(diff / 86400000));
-      document.getElementById('cd-hours').textContent = pad(Math.floor(diff / 3600000) % 24);
-      document.getElementById('cd-mins').textContent  = pad(Math.floor(diff / 60000) % 60);
-      document.getElementById('cd-secs').textContent  = pad(Math.floor(diff / 1000) % 60);
+      setNum(document.getElementById('cd-days'),  pad(Math.floor(diff / 86400000)));
+      setNum(document.getElementById('cd-hours'), pad(Math.floor(diff / 3600000) % 24));
+      setNum(document.getElementById('cd-mins'),  pad(Math.floor(diff / 60000) % 60));
+      setNum(document.getElementById('cd-secs'),  pad(Math.floor(diff / 1000) % 60));
     }
     tick();
     setInterval(tick, 1000);
@@ -849,6 +874,18 @@
           btn.style.transform = `translate(${((e.clientX - (r.left + r.width / 2)) * s).toFixed(1)}px, ${((e.clientY - (r.top + r.height / 2)) * s).toFixed(1)}px)`;
         });
         btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+      });
+
+      // Cards: subtle 3D tilt toward the pointer + gold sheen tracking under it.
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('pointermove', e => {
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+          card.style.setProperty('--cx', (px * 100) + '%');
+          card.style.setProperty('--cy', (py * 100) + '%');
+          card.style.transform = `perspective(900px) rotateX(${((0.5 - py) * 5).toFixed(2)}deg) rotateY(${((px - 0.5) * 5).toFixed(2)}deg) translateY(-4px)`;
+        });
+        card.addEventListener('pointerleave', () => { card.style.transform = ''; });
       });
     }
 
